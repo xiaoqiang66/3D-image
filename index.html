@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D动画相册</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background: black;
+            overflow: hidden;
+        }
+        .box{
+            width: 150px;
+            height: 280px;
+            margin: 150PX auto;
+            /* 开启3D */
+            transform-style: preserve-3d;
+            /* 聚焦方便在看特效，一般写完会去掉 */
+            /* perspective: 1200px; */
+            /* 绕X轴转更加有3D效果 */
+            transform:rotateX(-10deg) rotateY(0deg) ;
+            position: relative;
+            /* 动画 */
+            animation:  move0 20s linear 3s infinite;
+            
+        }
+        @keyframes move0{
+            from {transform: rotateX(-10deg) rotateY(0deg)}
+            to {
+                transform: rotateX(-10deg) rotateY(360deg);
+            }
+        }
+        .box>img{
+            width: 100%;
+            height: 100%;
+            /* 图片的投影 
+            用 -webkit-box-reflect：方位 距离图片本身的距离 投影颜色 -webkit-linear-gradient(方向 颜色透明度渐变)*/
+            -webkit-box-reflect: below 5px -webkit-linear-gradient(top,rgba(0,0,0,0) 40%,rgba(0,0,0,0.5) 100%);
+            /* 图片背景阴影 */
+            box-shadow: 0 0 5px pink;
+            position: absolute;
+            /* 圆角 */
+            border-radius: 10px;    
+            cursor: pointer;        
+        }
+        /* 动画 */
+        .box>img:nth-child(1){
+            animation: move 3s linear forwards;
+        }
+        .box>img:nth-child(2){
+            animation: move2 2.7s linear 0.3s forwards;
+        }
+        .box>img:nth-child(3){
+            animation: move3 2.4s linear 0.6s forwards;
+        }
+        .box>img:nth-child(4){
+            animation: move4 2.1s linear 0.9s forwards;
+        }
+        .box>img:nth-child(5){
+            animation: move5 1.8s linear 1.2s forwards;
+        }
+        .box>img:nth-child(6){
+            animation: move6 1.5s linear 1.5s forwards;
+        }
+        .box>img:nth-child(7){
+            animation: move7 1.2s linear 1.8s forwards;
+        }
+        .box>img:nth-child(8){
+            animation: move8 0.9s linear 2.1s forwards;
+        }
+        .box>img:nth-child(9){
+            animation: move9 0.6s linear 2.4s forwards;
+        }
+        .box>img:nth-child(10){
+            animation: move10 0.3s linear 2.7s forwards;
+        }
+        
+        @keyframes move{
+            0%{}
+            100%{ transform:rotateY(324deg) translateZ(400px)}
+        }
+        @keyframes move2{
+            0%{}
+            100%{ transform:rotateY(288deg) translateZ(400px)}
+        }
+        @keyframes move3{
+            0%{}
+            100%{ transform:rotateY(252deg) translateZ(400px)}
+        }
+        @keyframes move4{
+            0%{}
+            100%{ transform:rotateY(216deg) translateZ(400px)}
+        }
+        @keyframes move5{
+            0%{}
+            100%{ transform:rotateY(180deg) translateZ(400px)}
+        }
+        @keyframes move6{
+            0%{}
+            100%{ transform:rotateY(144deg) translateZ(400px)}
+        }
+        @keyframes move7{
+            0%{}
+            100%{ transform:rotateY(108deg) translateZ(400px)}
+        }
+        @keyframes move8{
+            0%{}
+            100%{ transform:rotateY(72deg) translateZ(400px)}
+        }
+        @keyframes move9{
+            0%{}
+            100%{ transform:rotateY(36deg) translateZ(400px)}
+        }
+        @keyframes move10{
+            0%{}
+            100%{ transform:translateZ(400px)}
+        }
+
+
+        /* 底座光杯 */
+        
+        p{
+            width: 1300px;
+            height: 1300px;
+            /*径向渐变 (从哪里开始) 扩散程度 开始时候的颜色  结束时候的颜色*/
+            background:-webkit-radial-gradient(center center,600px 600px,rgba(244,23,134,0.2),rgba(0,0,0,0));
+            transform: rotateX(90deg);
+            border-radius: 50%;
+            position: absolute;
+            left:50%;
+            top:102%;
+            margin-left:-635px;
+            margin-top:-600px;
+        }
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="box" id="box">
+        <img src="./imgs/timg1.jpg">
+        <img src="./imgs/timg2.jpg">
+        <img src="./imgs/timg3.jpg">
+        <img src="./imgs/timg4.jpg">
+        <img src="./imgs/timg5.jpg">
+        <img src="./imgs/timg6.jpg">
+        <img src="./imgs/timg7.jpg">
+        <img src="./imgs/timg8.jpg">
+        <img src="./imgs/timg9.jpg">
+        <img src="./imgs/timg10.jpg">
+        <p></p>
+    </div>
+    <audio autoplay loop>
+			<source src="./初音ミク - 君の夢は私の夢 (初音未来版).mp3" type="audio/mp3"/>
+			你的浏览器版本过低，请升级后听
+	</audio>
+
+</body>
+</html>
+<script>
+    var box = document.getElementsByTagName("div")[0];
+    var imgs = document.getElementsByTagName("img");
+    var roX = 0;
+    var roY = 0;
+    var timer = null;
+    var minuseX = 0;
+    var minuseY = 0;
+    //页面点击不松手时停止动画  松手继续动画
+    window.onmousedown = function(event){
+        event.preventDefault?event.preventDefault():(event.returnValue = false);
+        box.style.animation = "move0 0s linear 3s infinite"; 
+        //记录当前坐标
+        event = event || window.event;
+        var lastX = event.clientX;
+        var lastY = event.clientY;
+        // console.log(lastX)
+        window.onmousemove = function(e){
+            e=e||window.event;
+            //记录当前坐标
+            var nowX = e.clientX;
+            var nowY = e.clientY;
+            // console.log(nowX)
+            // 求差值
+            var minuseX = nowX - lastX;
+            var minuseY = nowY - lastY;
+            //更新box的旋转角度，拖拽越快--> minus变化越大->
+            //roY变化越大  旋转越快
+            roX -= minuseY*0.05
+            roY += minuseX*0.1
+            console.log(minuseX)
+
+            box.style.transform ='rotateX('+roX+'deg) rotateY('+roY+'deg)';
+            // 随着鼠标移动,当前点成前一点
+            lastX = nowX;
+            lastY = nowY;
+        }
+        window.onmouseup = function(){
+            window.onmousemove = null
+            box.style.animation = "move0 20s linear 3s infinite";
+        
+        }
+    }   
+   
+
+
+
+
+
+
+
+
+</script>
